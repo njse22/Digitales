@@ -1,110 +1,81 @@
 package model;
 
-import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.PixelGrabber;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.PrintWriter;
 
 public class ImageProcessor {
-
-	private String pathImage; 
-	private Image image; 
-	private String outFile; 
-	private File binaryfile; 
 	
-	public ImageProcessor(String pathFile) {
-		this.pathImage = pathFile.toLowerCase(); 
-		this.image = Toolkit.getDefaultToolkit().getImage(pathImage);
-		this.outFile = pathImage.replace(".jpg", ".txt"); 
-		convertToBinary(outFile);
+	private static ImageProcessor instance = null; 
+	
+	private ImageProcessor() {}
+	
+	public synchronized static ImageProcessor getInstance() {
+		if(instance == null)
+			instance = new ImageProcessor(); 
+		return instance; 
 	}
-	
-	
-	/**
-	 * pre: pathImage es la dirección a un archivo .jpg  
-	 * 
-	 * */
-	private void convertToBinary(String outFile) {
-		
+
+	public void processImage(String infile) {
+		infile = infile.toLowerCase();
+		java.awt.Image image = Toolkit.getDefaultToolkit().getImage(infile);
+
 		try {
 			
-			PrintWriter out = new PrintWriter(outFile);
+			String outImage = ""; 
+			String outfile = infile.replace(".jpg", ".txt");
+			PrintWriter out = new PrintWriter(outfile);
 			PixelGrabber grabber = new PixelGrabber(image, 0, 0, -1, -1, false);
-			
-			if(grabber.grabPixels()) {
-				int width = grabber.getWidth(); 
-				int heigth = grabber.getHeight(); 
-				
-				int[] data = (int[])grabber.getPixels();
-				int loopflag = 1; 
-				int output; 
-				
-				int threshold = 12500000; 
-				
-				for(int i = 0; i < width*heigth; i++) {
-					// para el blanco
-					if(data[i] == 16777215)
-						output = 1; 
-					//para el negro 
-					else if(data[i] == 0)
-						output = 0; 
-					//para otro color diferente de blanco o negro
-					else if(data[i] < threshold)
-						output = 0; 
-					else {
-						output = 1; 
+
+			if (grabber.grabPixels()) {
+				int width = grabber.getWidth();
+				int heigth = grabber.getHeight();
+
+				int[] data = (int[]) grabber.getPixels();
+				int loopstatus = 1;
+				int output;
+
+				// default = 12500000.threshold value = 0 -> 99999999 (**currently not sure about the highest value...). **tips: adjust for every million first((+-)10000000)
+				int threshold = 12500000;
+
+				for (int i = 0; i < width * heigth; i++) {
+					// white
+					if (data[i] == 16777215) {
+						output = 1;
+					}
+					// black
+					else if (data[i] == 0) {
+						output = 0;
+					}
+					// value that are not white/black.
+					else if (data[i] < threshold) {
+						output = 0;
+					} else {
+						output = 1;
 					}
 					
-					out.print(output);
-					
-					if(width == (i+1)/loopflag) {
-						out.println();
-						loopflag++;
+					outImage += output; 
+				}
+				// RLE - 
+				int n =  outImage.length();
+				for (int i = 0; i < n; i++) {
+					int count = 1; 
+					while(i < n-1 && outImage.charAt(i) == outImage.charAt(i+1)) {
+						count++; 
+						i++; 
 					}
-				}	
+					out.print(count);
+					out.print(outImage.charAt(i));
+				}
 			}
 			out.close();
-			RLE();
-		} catch (IOException | InterruptedException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	}
 	
-
-	private String readFile() {
-		String outStr = ""; 
-		try {
-			FileReader reader = new FileReader(outFile);
-			int i; 
-			while ( (i = reader.read()) != -1) {
-				outStr += (char) i; 
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		return outStr; 
-	}
-
 	
-	private void RLE() {
-		String str = readFile();
-		int n =  str.length(); 
-		for (int i = 0; i < n; i++) {
-			int count = 1; 
-			while(i < n-1 && str.charAt(i) == str.charAt(i+1) ) {
-				count ++; 
-				i++; 
-			}
-            System.out.print(count); 
-            System.out.print(str.charAt(i));
-		}
-	}
-		
 	
 	
 }
