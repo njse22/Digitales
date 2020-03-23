@@ -1,7 +1,6 @@
-package model;
+package lecturaEscritura;
 
 import java.io.BufferedReader;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,6 +9,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import codificacionDecodificacion.CodificacionLZW;
 
 public class lectorEscritor {
 	
@@ -75,16 +76,19 @@ public class lectorEscritor {
 	}
 	
 	
-	public byte[] leerBytes(String direccion) {
+	public String leerBytes(String direccion) {
 		
 		try {
 			FileInputStream archivoLectura = new FileInputStream(new File(direccion));
-			ArrayList<String> binarios = new ArrayList<String>();
+//			ArrayList<String> binarios = new ArrayList<String>();
+			String salida = "";
 			byte[] bytes = archivoLectura.readAllBytes();
 			for(int i = 0; i < bytes.length; i++) {
-				binarios.add(valorBinario(bytes[i])+"");
-				System.out.println(bytes[i]+" "+ binarios.get(i)+" "+binarios.get(i).toCharArray().length+" "+ agregarCeros(binarios.get(i)));
+				salida = salida + agregarCeros(valorBinario(bytes[i])+"");
+//				binarios.add(valorBinario(bytes[i])+"");
+//				System.out.println(binarios.get(i)+" "+binarios.get(i).toCharArray().length+" "+ agregarCeros(binarios.get(i)));
 			}
+			return salida;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -126,8 +130,9 @@ public class lectorEscritor {
 	public static void main(String[] args) {
 		lectorEscritor l = new lectorEscritor();
 //		System.out.println(l.escribirTexto("hola mundo \n como estas?","C:\\Users\\57318\\Documents\\ICESI\\prubas comunicaciones digitales\\cossitas.ascii" ));
-		System.out.println(l.leerTexto("C:\\Users\\57318\\Documents\\ICESI\\prubas comunicaciones digitales\\cossitas.ascii"));
+//		System.out.println(l.leerTexto("C:\\Users\\57318\\Documents\\ICESI\\prubas comunicaciones digitales\\cossitas.ascii"));
 //		l.leerBytes("C:\\Users\\57318\\Documents\\ICESI\\prubas comunicaciones digitales\\cossitas.ascii");
+		System.out.println(l.leerBytes("C:\\Users\\57318\\Documents\\ICESI\\prubas comunicaciones digitales\\cossitas.ascii"));
 	}
 
 }
