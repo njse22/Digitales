@@ -1,4 +1,4 @@
-package codificacionDecodificacion;
+package model;
 
 import java.util.ArrayList;
 import java.util.Enumeration;

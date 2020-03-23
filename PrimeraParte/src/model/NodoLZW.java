@@ -1,4 +1,4 @@
-package codificacionDecodificacion;
+package model;
 
 public class NodoLZW {
 	
