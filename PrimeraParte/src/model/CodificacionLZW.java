@@ -6,7 +6,6 @@ import java.util.Hashtable;
 
 public class CodificacionLZW {
 	
-//	private Hashtable<String,Integer> diccionario;
 	private ArrayList<NodoLZW> diccionario;
 	private String mensaje;
 	
@@ -101,15 +100,29 @@ public class CodificacionLZW {
 				 w = wk;
 			 }else {
 				 cadenaSalida = cadenaSalida +" "+ buscarEnLista(w).getIndice();
+//				 System.out.println(cadenaSalida);
+//				 System.out.println(w);
 				 diccionario.add(new NodoLZW(wk, contadorDiccionario));
+//				 System.out.println("$$"+contadorDiccionario);
 				 contadorDiccionario++;
 				 w = k;
 				 
 			 }
 		}
+//		System.out.println(w);
+//		System.out.println(cadenaSalida);
 		cadenaSalida = cadenaSalida + " " +buscarEnLista(w).getIndice();
-		
+//		System.out.println(buscarEnLista(w).getIndice());
+		double a = Math.log(diccionario.get(diccionario.size()-1).getIndice()) / Math.log(2);
+		double c =Math.ceil((Math.log(diccionario.get(diccionario.size()-1).getIndice()) / Math.log(2)));
 		numeroBits = (int) Math.ceil((Math.log(diccionario.get(diccionario.size()-1).getIndice()) / Math.log(2)));
+		System.out.println(a);
+		System.out.println(c);
+		System.out.println(diccionario.get(diccionario.size()-1).getIndice());
+		if(a > c) {
+			numeroBits = numeroBits+1;
+		}
+		
 		System.out.println("numero de bits requeridos: "+ numeroBits);
 		cadenaCodificada = cadenaSalida;
 	}
@@ -132,7 +145,6 @@ public class CodificacionLZW {
 		
 		for(int i = 1 ; i < cod.length;i++ ) {
 			int valorBinario = valorBinario(Integer.parseInt(cod[i]));
-//			salidabinaria = salidabinaria+" "+ agregarCeros(valorBinario+"", numeroBits);
 			salidabinaria = salidabinaria + agregarCeros(valorBinario+"", numeroBits);
 		}
 		
@@ -171,9 +183,10 @@ public class CodificacionLZW {
 		String[] indices = cadenaCodificada.split(" ");
 		String igual = agregarCeros(valorBinario("=".getBytes()[0])+"", 8);
 		String coma = agregarCeros(valorBinario(",".getBytes()[0])+"", 8);
+		String punto = agregarCeros(valorBinario(".".getBytes()[0])+"", 8);
 		for(int i = 0; i < caracteresDiccionario; i++) {
 			if(i == (caracteresDiccionario-1)) {
-				salida =salida + agregarCeros(valorBinario(diccionario.get(i).getSimbolo().getBytes()[0])+"", 8) + igual + agregarCeros(valorBinario(diccionario.get(i).getIndice())+"", numeroBits);
+				salida =salida + agregarCeros(valorBinario(diccionario.get(i).getSimbolo().getBytes()[0])+"", 8) + igual + agregarCeros(valorBinario(diccionario.get(i).getIndice())+"", numeroBits)+punto;
 			}else {
 				salida =salida + agregarCeros(valorBinario(diccionario.get(i).getSimbolo().getBytes()[0])+"", 8) +igual+ agregarCeros(valorBinario(diccionario.get(i).getIndice())+"", numeroBits)+coma;
 			}

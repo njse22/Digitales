@@ -29,9 +29,9 @@ public class lectorEscritor {
 			String linea = bf.readLine();
 			while (linea != null) {
 				if(cadena == null) {
-					cadena = linea;
+					cadena = linea+"\n";
 				}else {					
-					cadena = cadena +" "+ linea;
+					cadena = cadena +" "+ linea+"\n";
 				}
 				System.out.println(linea);
 				linea = bf.readLine();
@@ -45,7 +45,8 @@ public class lectorEscritor {
 			System.out.println(codificacionTexto.salidaBinario());
 			System.out.println(codificacionTexto.diccionarioBinario());
 			System.out.println(codificacionTexto.getCaracteresDiccionario());
-			System.out.println(codificacionTexto.getCadenaBinariaCompleta());
+			escribirTexto(codificacionTexto.getCadenaBinariaCompleta(), "C:\\Users\\57318\\Documents\\ICESI\\prubas comunicaciones digitales\\salidaBinaria.txt");
+			
 			
 			return true;
 		} catch (FileNotFoundException e) {
@@ -78,11 +79,13 @@ public class lectorEscritor {
 	}
 	
 	
-public String leerBytes(String direccion) {
+	public String leerBytes(String direccion) {
 		
 		try {
 			FileInputStream archivoLectura = new FileInputStream(new File(direccion));
+//			ArrayList<String> binarios = new ArrayList<String>();
 			String salida = "";
+<<<<<<< Updated upstream
 			byte[] bytes = new byte[1024];
 			int lector = archivoLectura.read(bytes); 
 			int i = 0; 
@@ -90,6 +93,14 @@ public String leerBytes(String direccion) {
 				salida = salida + agregarCeros(valorBinario(lector)+"");
 				i++; 
 			}		
+=======
+			byte[] bytes = archivoLectura.readAllBytes();
+			for(int i = 0; i < bytes.length; i++) {
+				salida = salida + agregarCeros(valorBinario(bytes[i])+"");
+//				binarios.add(valorBinario(bytes[i])+"");
+//				System.out.println(binarios.get(i)+" "+binarios.get(i).toCharArray().length+" "+ agregarCeros(binarios.get(i)));
+			}
+>>>>>>> Stashed changes
 			return salida;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
