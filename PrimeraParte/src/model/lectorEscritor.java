@@ -87,7 +87,7 @@ public String leerBytes(String direccion) {
 			int lector = archivoLectura.read(bytes); 
 			int i = 0; 
 			while(lector != -1 ) {
-				salida = salida + agregarCeros(valorBinario(bytes[i])+"");
+				salida = salida + agregarCeros(valorBinario(lector)+"");
 				i++; 
 			}		
 			return salida;
@@ -137,8 +137,8 @@ public String leerBytes(String direccion) {
 	
 	public static void main(String[] args) {
 		lectorEscritor l = new lectorEscritor();
-		System.out.println(l.leerTexto("C:\\Users\\57318\\Documents\\ICESI\\prubas comunicaciones digitales\\cossitas.ascii"));
-//		System.out.println(l.leerBytes("C:\\Users\\57318\\Documents\\ICESI\\prubas comunicaciones digitales\\cossitas.ascii"));
+//		System.out.println(l.leerTexto("C:\\Users\\57318\\Documents\\ICESI\\prubas comunicaciones digitales\\cossitas.ascii"));
+		System.out.println(l.leerBytes("/home/slayer-nation/ICESI/Septimo_Semestre/Comunicaciones_Digitales/cossitas.ascii"));
 	}
 
 }
