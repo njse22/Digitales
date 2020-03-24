@@ -2,18 +2,27 @@ package model;
 
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.image.ColorModel;
+import java.awt.image.ImageProducer;
+import java.awt.image.IndexColorModel;
+import java.awt.image.MemoryImageSource;
 import java.awt.image.PixelGrabber;
 import java.io.PrintWriter;
 
 public class ImageProcessor {
-	 
+	
+	private ImageProducer producer; 
 	private Image image;
 	private String codecImage; 
 	private PixelGrabber grabber; 
+	private int[] data; 
 	
 	public ImageProcessor() {
 		this.image = null; 
-		this.codecImage = ""; 
+		this.codecImage = "";
+		this.producer = null;
+		this.data = null;  
+		
 	}
 	
 	public String getCodecImage() {
@@ -51,6 +60,37 @@ public class ImageProcessor {
 			e.printStackTrace();
 		}
 	}
+	
+	private void convertBinary() {
+		data = new int[codecImage.length()];
+		int binary = 0;
+		int digict = 0; 
+		int number = 0; 
+		int exp = 0; 
+		for (int i = 0; i < codecImage.length(); i++) {
+			number = codecImage.charAt(i); 
+			while(codecImage.charAt(i) != 0) {
+				digict = number%2;  
+				binary = (int) (binary+ digict*Math.pow(10, exp));
+				exp++; 
+				number = number/2; 
+			}
+		data[i] = binary; 
+		}
+	}
+	
+	
+	public void writeImage() {
+		byte[] grey = new byte[256]; 
+		for(int i = 0; i < 256; i++)
+			grey[i] = (byte)i; 
+		ColorModel greyModel = new IndexColorModel(8, 256, grey, grey,grey); 
+		this.producer = new MemoryImageSource(320, 200, data, 0, 320); 	
+		Image imageOut = Toolkit.getDefaultToolkit().createImage(this.producer);	
+		
+	} 
+	
+	
 	
 	
 	
