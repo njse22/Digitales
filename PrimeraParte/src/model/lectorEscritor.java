@@ -83,7 +83,7 @@ public String leerBytes(String direccion) {
 		try {
 			FileInputStream archivoLectura = new FileInputStream(new File(direccion));
 			String salida = "";
-			byte[] bytes = new byte[direccion.length()];
+			byte[] bytes = new byte[1024];
 			int lector = archivoLectura.read(bytes); 
 			int i = 0; 
 			while(lector != -1 ) {
