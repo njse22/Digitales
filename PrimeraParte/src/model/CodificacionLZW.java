@@ -181,5 +181,13 @@ public class CodificacionLZW {
 		return salida;
 	}
 	
+	
+	public String getCadenaBinariaCompleta() {
+		String salida= "";
+		
+		salida = agregarCeros(valorBinario(caracteresDiccionario)+"", 8) + agregarCeros(valorBinario(numeroBits)+"", 8) + diccionarioBinario() + salidaBinario();
+		
+		return salida;
+	}
 
 }
