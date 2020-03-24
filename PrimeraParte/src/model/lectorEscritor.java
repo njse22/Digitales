@@ -1,6 +1,8 @@
 package model;
 
 import java.io.BufferedReader;
+
+import java.io.InputStream; 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -76,15 +78,18 @@ public class lectorEscritor {
 	}
 	
 	
-	public String leerBytes(String direccion) {
+public String leerBytes(String direccion) {
 		
 		try {
 			FileInputStream archivoLectura = new FileInputStream(new File(direccion));
 			String salida = "";
-			byte[] bytes = archivoLectura.readAllBytes();
-			for(int i = 0; i < bytes.length; i++) {
+			byte[] bytes = new byte[direccion.length()];
+			int lector = archivoLectura.read(bytes); 
+			int i = 0; 
+			while(lector != -1 ) {
 				salida = salida + agregarCeros(valorBinario(bytes[i])+"");
-			}
+				i++; 
+			}		
 			return salida;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -97,6 +102,9 @@ public class lectorEscritor {
 		
 		return null;
 	}
+		
+	
+	
 	
 	
 	private int valorBinario(int byte_n) {
