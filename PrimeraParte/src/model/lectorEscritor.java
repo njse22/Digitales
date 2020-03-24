@@ -85,22 +85,12 @@ public class lectorEscritor {
 			FileInputStream archivoLectura = new FileInputStream(new File(direccion));
 //			ArrayList<String> binarios = new ArrayList<String>();
 			String salida = "";
-<<<<<<< Updated upstream
-			byte[] bytes = new byte[1024];
-			int lector = archivoLectura.read(bytes); 
-			int i = 0; 
-			while(lector != -1 ) {
-				salida = salida + agregarCeros(valorBinario(lector)+"");
-				i++; 
-			}		
-=======
 			byte[] bytes = archivoLectura.readAllBytes();
 			for(int i = 0; i < bytes.length; i++) {
 				salida = salida + agregarCeros(valorBinario(bytes[i])+"");
 //				binarios.add(valorBinario(bytes[i])+"");
 //				System.out.println(binarios.get(i)+" "+binarios.get(i).toCharArray().length+" "+ agregarCeros(binarios.get(i)));
 			}
->>>>>>> Stashed changes
 			return salida;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
