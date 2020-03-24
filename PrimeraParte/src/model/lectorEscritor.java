@@ -46,6 +46,8 @@ public class lectorEscritor {
 			System.out.println(codificacionTexto.diccionarioBinario());
 			System.out.println(codificacionTexto.getCaracteresDiccionario());
 			escribirTexto(codificacionTexto.getCadenaBinariaCompleta(), "C:\\Users\\57318\\Documents\\ICESI\\prubas comunicaciones digitales\\salidaBinaria.txt");
+			System.out.println("Numero de bits del mensaje sin comprimir: "+ leerBytes(direccion).length());
+			System.out.println("Numero de bits del mensaje ya comprimido: "+ codificacionTexto.getCadenaBinariaCompleta().length());
 			
 			
 			return true;
