@@ -1,4 +1,4 @@
-package model;
+package lecturaEscritura;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -10,7 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import model.CodificacionLZW;
+import codificacionDecodificacion.CodificacionLZW;
 
 public class lectorEscritor {
 	
