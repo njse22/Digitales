@@ -46,7 +46,7 @@ public class lectorEscritor {
 			System.out.println(codificacionTexto.diccionarioBinario());
 			System.out.println(codificacionTexto.getCaracteresDiccionario());
 			escribirTexto(codificacionTexto.getCadenaBinariaCompleta(), "C:\\Users\\57318\\Documents\\ICESI\\prubas comunicaciones digitales\\salidaBinaria.txt");
-			System.out.println("Numero de bits del mensaje sin comprimir: "+ leerBytes(direccion).length());
+			System.out.println("Numero de bits del mensaje sin comprimir: "+ leerBytes(direccion));
 			System.out.println("Numero de bits del mensaje ya comprimido: "+ codificacionTexto.getCadenaBinariaCompleta().length());
 			
 			
@@ -140,8 +140,8 @@ public class lectorEscritor {
 	
 	public static void main(String[] args) {
 		lectorEscritor l = new lectorEscritor();
-//		System.out.println(l.leerTexto("C:\\Users\\57318\\Documents\\ICESI\\prubas comunicaciones digitales\\cossitas.ascii"));
-		System.out.println(l.leerBytes("/home/slayer-nation/ICESI/Septimo_Semestre/Comunicaciones_Digitales/cossitas.ascii"));
+		System.out.println(l.leerTexto("C:\\Users\\57318\\Documents\\ICESI\\prubas comunicaciones digitales\\cossitas.ascii"));
+//		System.out.println(l.leerBytes("/home/slayer-nation/ICESI/Septimo_Semestre/Comunicaciones_Digitales/cossitas.ascii"));
 	}
 
 }
