@@ -2,7 +2,6 @@ package execute;
 
 import model.ImageProcessor;
 
-import model.SingletonImageProcessor;
 import model.lectorEscritor;
 
 public class Exucute {
