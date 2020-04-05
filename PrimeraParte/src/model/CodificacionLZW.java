@@ -227,25 +227,38 @@ public class CodificacionLZW {
 		return cadenaCorregida;
 	}
 	
-	
+	/**
+	 * este metodo se encarga de convertir el diccionario en un arreglo de bits.
+	 * el diccionario sera horaganizado de la siguiente manera:
+	 * simbolo = indice,..., simbolo = indice.
+	 * en su representacion binaria.
+	 * */
 	public String diccionarioBinario() {
 		String salida = "";
 		String cadenaCruda = "";
 		String[] indices = cadenaCodificada.split(" ");
-		String igual = agregarCeros(valorBinario("=".getBytes()[0])+"", 8);
-		String coma = agregarCeros(valorBinario(",".getBytes()[0])+"", 8);
-		String punto = agregarCeros(valorBinario(".".getBytes()[0])+"", 8);
+		String igual = agregarCeros(valorBinario("=".getBytes()[0])+"", 8);//conversion a binario del signo igual "="
+		String coma = agregarCeros(valorBinario(",".getBytes()[0])+"", 8);//conversion a binario de la coma ","
+		String punto = agregarCeros(valorBinario(".".getBytes()[0])+"", 8);//conversion a binario del punto "."
 		for(int i = 0; i < caracteresDiccionario; i++) {
-			if(i == (caracteresDiccionario-1)) {
+			if(i == (caracteresDiccionario-1)) {//pregunta si se esta en el final del diccionario para en vez de una coma al final poner un punto
 				salida =salida + agregarCeros(valorBinario(diccionario.get(i).getSimbolo().getBytes()[0])+"", 8) + igual + agregarCeros(valorBinario(diccionario.get(i).getIndice())+"", numeroBits)+punto;
 			}else {
+				// el diccionario se organiza de la sigiente forma:
+				// simbolo = indice, pero utilizando sis equivalentes en binario.
 				salida =salida + agregarCeros(valorBinario(diccionario.get(i).getSimbolo().getBytes()[0])+"", 8) +igual+ agregarCeros(valorBinario(diccionario.get(i).getIndice())+"", numeroBits)+coma;
 			}
 		}
 		return salida;
 	}
 	
-	
+	/**
+	 * en este metodo se toman, la cadena del mensaje traducida a binario, el diccionario traducido a binario,
+	 * el numero de lineas que se ran requeridas del diccionario y el numero de bits que requiere cada simbilo ya codificado.
+	 * porsteriormente se concatena todo lo anterior en una sola cadena de bits.
+	 * los bits se organizaran de la siguiente manera:
+	 * numero de simbolos del diccionario//numero de bits por simbolo//diccionario//mensaje. 
+	 * */
 	public String getCadenaBinariaCompleta() {
 		String salida= "";
 		
