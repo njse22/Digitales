@@ -88,6 +88,23 @@ public class DecodificacionLZW {
 		this.cadenaCodificada = cadenaCodificada;
 	}
 
+	
+	public String getCadenaBinaria() {
+		return cadenaBinaria;
+	}
+
+	public void setCadenaBinaria(String cadenaBinaria) {
+		this.cadenaBinaria = cadenaBinaria;
+	}
+
+	public String getCadenaDecodificada() {
+		return cadenaDecodificada;
+	}
+
+	public void setCadenaDecodificada(String cadenaDecodificada) {
+		this.cadenaDecodificada = cadenaDecodificada;
+	}
+	
 	public int getNumeroBits() {
 		return numeroBits;
 	}
@@ -123,7 +140,6 @@ public class DecodificacionLZW {
 			cadenacruda = cadenacruda + bits.charAt(contadorPosicion);//diccionario inicial de datos                             +
 			contadorPosicion++;                                       //para asi facilitar su lectura en la cadena de bits cruda.+
 		}	                                                          //                                                         + 
-		                                                              //---------------------------------------------------------+    
 		caracteresDiccionario = getNumero(cadenacruda);// se agrega el numero de simbolos.     
 
 
@@ -148,17 +164,7 @@ public class DecodificacionLZW {
 			byte[] letra = new byte[1];
 			letra[0]= (byte) getNumero(cadenacruda);
 			String cadenaLetra = new String(letra);// se guarda el simbolo en una varialble local 
-			
 			cadenacruda = "";
-			contador1 = contadorPosicion+8; //se inicializa de nuevo el contador para leer la siguiente parte
-
-			while(contadorPosicion < contador1) {
-				cadenacruda = cadenacruda + bits.charAt(contadorPosicion);
-				contadorPosicion++;
-			}
-			letra[0]= (byte) getNumero(cadenacruda);
-			String cadenaSigno = new String(letra);
-			
 			cadenacruda = "";
 			contador1 = contadorPosicion+numeroBits;// se inicializa de nuevo el contador con la diferencia de que esta vez se tomara un numero de bits diferente (el correspondiente a la cantidad susada en el mensaje)
 			
@@ -167,16 +173,6 @@ public class DecodificacionLZW {
 				contadorPosicion++;
 			}
 			int cadenaIndice = getNumero(cadenacruda);// se guarda el indice en una variable local
-			
-			cadenacruda = "";
-			contador1 = contadorPosicion+8;
-			
-			while(contadorPosicion < contador1) {
-				cadenacruda = cadenacruda + bits.charAt(contadorPosicion);
-				contadorPosicion++;
-			}
-			letra[0]= (byte) getNumero(cadenacruda);
-			String cadenaComa = new String(letra);
 			cadenacruda = "";
 			
 			diccionario.add(new NodoLZW(cadenaLetra, cadenaIndice));// se agrega el simbolo y su indice al diccionario
@@ -184,15 +180,13 @@ public class DecodificacionLZW {
 			contadordic--;
 		}
 		
-		
-		while(contadorPosicion < bits.length()) {                         //---------------------------------------------------------+
-			                                                              //en esta seccion se procese a traducir la seccion---------+
-			int contador2 = contadorPosicion+numeroBits;                  //correspondiente al mensaje que se desea decodificar------+
-			while(contadorPosicion < contador2) {                         //para despuer irlo concatenando al atributo --------------+
-				cadenacruda = cadenacruda + bits.charAt(contadorPosicion);//cadenaCodificada-----------------------------------------+
-				contadorPosicion++;                                       //---------------------------------------------------------+
-			}                                                             //---------------------------------------------------------+
-			
+		contadorPosicion++;			                                        //en esta seccion se procese a traducir la seccion---------+
+		while(contadorPosicion < bits.length()) {                           //---------------------------------------------------------+
+			int contador2 = contadorPosicion+numeroBits;                    //correspondiente al mensaje que se desea decodificar------+
+			while(contadorPosicion < contador2) {                           //para despuer irlo concatenando al atributo --------------+
+				cadenacruda = cadenacruda + bits.charAt(contadorPosicion-1);//cadenaCodificada-----------------------------------------+
+				contadorPosicion++;                                         //---------------------------------------------------------+
+			}                                                               //---------------------------------------------------------+
 			cadenaCodificada =cadenaCodificada +" "+getNumero(cadenacruda);
 			cadenacruda= "";
 		}
@@ -217,17 +211,15 @@ public class DecodificacionLZW {
 	/**
 	 *metodo encargado de la descompresion del mensaje resivido 
 	 * */
-	public String descomprecion() {
+	public void descomprecion() {
 		String salida= "";
 		String caracter ="";
 		int codigoViejo;
 		int codigoNuevo;
 		String cadena= "";
 		String[] codigo = cadenaCodificada.split(" ");
-		System.out.println(codigo[2]);
 		codigoViejo = (int)Integer.parseInt(codigo[1]);
 		caracter = buscarEnDiccionario(codigoViejo);
-		System.out.println(caracter);
 		salida = salida + caracter;
 		for( int i = 2; i <codigo.length;i++ ) {
 			codigoNuevo = (int)Integer.parseInt(codigo[i]);
@@ -244,7 +236,7 @@ public class DecodificacionLZW {
 			codigoViejo = codigoNuevo;
 		}
 		
-		return salida;
+		mensaje = salida;
 	}
 	
 	/**
@@ -260,5 +252,6 @@ public class DecodificacionLZW {
 		
 		return null;
 	}
+
 	
 }

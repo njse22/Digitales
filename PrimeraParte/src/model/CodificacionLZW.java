@@ -41,6 +41,10 @@ public class CodificacionLZW {
 	 * */
 	private int caracteresDiccionario;
 	
+	/**
+	 * cadena que contine la informacion binaria del mensaje ya codificcado.
+	 * */
+	private String cadenaBinaria;
 	
 	/**
 	 * constructor de la clase encargada de la clase encargada de
@@ -51,9 +55,9 @@ public class CodificacionLZW {
 		this.mensaje = mensaje;
 		contadorDiccionario = 0;
 		caracteresDiccionario =0;
+		cadenaBinaria = "";
 		diccionario = new ArrayList<NodoLZW>();
 		setNumeroBits(0);
-		compresion(); //inmediatamente se crea el objeto se procede a efectuar la codificacion.
 	}
 	
 	public ArrayList<NodoLZW> getDiccionario() {
@@ -103,8 +107,18 @@ public class CodificacionLZW {
 	public void setCaracteresDiccionario(int caracteresDiccionario) {
 		this.caracteresDiccionario = caracteresDiccionario;
 	}
+	
+	
 
 	
+	public String getCadenaBinaria() {
+		return cadenaBinaria;
+	}
+
+	public void setCadenaBinaria(String cadenaBinaria) {
+		this.cadenaBinaria = cadenaBinaria;
+	}
+
 	/**
 	 * metodo encargado de la inicializacion del diccionario del mensaje
 	 * recorriendo todo el mensaje caracter por caracter y revisando si 
@@ -115,8 +129,8 @@ public class CodificacionLZW {
 		char[] splitMensaje = mensaje.toCharArray();// convierte el mensaje a codificar en un arreglo que contiene cada uno de los simbolos por separado.
 		
 		for(int i = 0; i < splitMensaje.length; i++) {// avanza a traves del arreglo de simbolos
-			if(buscarEnLista(splitMensaje[i]+"") == null) {//verifica si el simbolo esta o no esta en el diccionario.
-				diccionario.add(new NodoLZW(splitMensaje[i]+"", i));// al no encontrar el simbolo lo agrega al diccionario.
+			if(buscarEnLista(""+splitMensaje[i]) == null) {//verifica si el simbolo esta o no esta en el diccionario.
+				diccionario.add(new NodoLZW(""+splitMensaje[i], contadorDiccionario));// al no encontrar el simbolo lo agrega al diccionario.
 				contadorDiccionario++;
 				caracteresDiccionario++;
 			}
@@ -237,17 +251,10 @@ public class CodificacionLZW {
 		String salida = "";
 		String cadenaCruda = "";
 		String[] indices = cadenaCodificada.split(" ");
-		String igual = agregarCeros(valorBinario("=".getBytes()[0])+"", 8);//conversion a binario del signo igual "="
-		String coma = agregarCeros(valorBinario(",".getBytes()[0])+"", 8);//conversion a binario de la coma ","
-		String punto = agregarCeros(valorBinario(".".getBytes()[0])+"", 8);//conversion a binario del punto "."
 		for(int i = 0; i < caracteresDiccionario; i++) {
-			if(i == (caracteresDiccionario-1)) {//pregunta si se esta en el final del diccionario para en vez de una coma al final poner un punto
-				salida =salida + agregarCeros(valorBinario(diccionario.get(i).getSimbolo().getBytes()[0])+"", 8) + igual + agregarCeros(valorBinario(diccionario.get(i).getIndice())+"", numeroBits)+punto;
-			}else {
 				// el diccionario se organiza de la sigiente forma:
-				// simbolo = indice, pero utilizando sis equivalentes en binario.
-				salida =salida + agregarCeros(valorBinario(diccionario.get(i).getSimbolo().getBytes()[0])+"", 8) +igual+ agregarCeros(valorBinario(diccionario.get(i).getIndice())+"", numeroBits)+coma;
-			}
+				// simbolo/indice pero utilizando sis equivalentes en binario.
+				salida =salida + agregarCeros(valorBinario(diccionario.get(i).getSimbolo().getBytes()[0])+"", 8) + agregarCeros(valorBinario(diccionario.get(i).getIndice())+"", numeroBits);
 		}
 		return salida;
 	}
@@ -259,12 +266,12 @@ public class CodificacionLZW {
 	 * los bits se organizaran de la siguiente manera:
 	 * numero de simbolos del diccionario//numero de bits por simbolo//diccionario//mensaje. 
 	 * */
-	public String getCadenaBinariaCompleta() {
+	public void getCadenaBinariaCompleta() {
 		String salida= "";
 		
 		salida = agregarCeros(valorBinario(caracteresDiccionario)+"", 8) + agregarCeros(valorBinario(numeroBits)+"", 8) + diccionarioBinario() + salidaBinario();
 		
-		return salida;
+		cadenaBinaria = salida;
 	}
 
 }

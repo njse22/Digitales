@@ -14,13 +14,10 @@ import java.io.IOException;
 
 public class lectorEscritor {
 	
-	
-	private CodificacionLZW codificacionTexto;
-	
 	public lectorEscritor() {
 	}
 	
-	public boolean leerTexto(String direccion) {
+	public String leerTexto(String direccion) {
 		
 		try {
 			FileReader fr = new FileReader(new File(direccion));		
@@ -31,35 +28,26 @@ public class lectorEscritor {
 				if(cadena == null) {
 					cadena = linea+"\n";
 				}else {					
-					cadena = cadena +" "+ linea+"\n";
+					cadena = cadena + linea+"\n";
 				}
-				System.out.println(linea);
 				linea = bf.readLine();
 			}
 			
 			bf.close();
 			fr.close();
-			System.out.println(">>"+cadena);
-			codificacionTexto = new CodificacionLZW(cadena);
-			System.out.println(codificacionTexto.getCadenaCodificada());
-			System.out.println(codificacionTexto.salidaBinario());
-			System.out.println(codificacionTexto.diccionarioBinario());
-			System.out.println(codificacionTexto.getCaracteresDiccionario());
-			escribirTexto(codificacionTexto.getCadenaBinariaCompleta(), "C:\\Users\\57318\\Documents\\ICESI\\prubas comunicaciones digitales\\salidaBinaria.txt");
-			System.out.println("Numero de bits del mensaje sin comprimir: "+ leerBytes(direccion));
-			System.out.println("Numero de bits del mensaje ya comprimido: "+ codificacionTexto.getCadenaBinariaCompleta().length());
 			
 			
-			return true;
+			
+			return cadena;
 		} catch (FileNotFoundException e) {
-			return false;
+			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		
-		return false;
+		return null;
 	}
 	
 	public boolean escribirTexto(String cadena, String direccion) {
@@ -85,13 +73,10 @@ public class lectorEscritor {
 		
 		try {
 			FileInputStream archivoLectura = new FileInputStream(new File(direccion));
-//			ArrayList<String> binarios = new ArrayList<String>();
 			String salida = "";
 			byte[] bytes = archivoLectura.readAllBytes();
 			for(int i = 0; i < bytes.length; i++) {
 				salida = salida + agregarCeros(valorBinario(bytes[i])+"");
-//				binarios.add(valorBinario(bytes[i])+"");
-//				System.out.println(binarios.get(i)+" "+binarios.get(i).toCharArray().length+" "+ agregarCeros(binarios.get(i)));
 			}
 			return salida;
 		} catch (FileNotFoundException e) {
@@ -135,13 +120,4 @@ public class lectorEscritor {
 		return cadenaCorregida;
 	}
 	
-	
-	
-	
-	public static void main(String[] args) {
-		lectorEscritor l = new lectorEscritor();
-		System.out.println(l.leerTexto("C:\\Users\\57318\\Documents\\ICESI\\prubas comunicaciones digitales\\cossitas.ascii"));
-//		System.out.println(l.leerBytes("/home/slayer-nation/ICESI/Septimo_Semestre/Comunicaciones_Digitales/cossitas.ascii"));
-	}
-
 }
