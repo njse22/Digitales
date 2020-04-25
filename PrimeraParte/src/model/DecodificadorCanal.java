@@ -12,6 +12,12 @@ public class DecodificadorCanal {
 		this.matrizParidad = matrizParidad;
 	}
 	
+	
+	/**
+	 * deteccionError : Método que determina si hay un error en base al sindrome 
+	 * true  : si hay un error 
+	 * false : si no lo hay 
+	 * */
 	public boolean deteccionError(int[] sindrome) {
 		if(binaryAdd(sindrome) == 0)
 			return false; 
@@ -19,6 +25,11 @@ public class DecodificadorCanal {
 			return true; 
 	}
 	
+	/**
+	 * liderDeCoclase : encuantre el lider de coclase
+	 * retorna el número de la colunna la cual corresponde con el lider de coclase 
+	 * retorna zero si no la encuentra 
+	 * */
 	public int liderDeCoclase(int[] sindrome) {
 		int rows =  matrizParidad.length;
 		for (int i = 0; i < rows; i++) {
@@ -29,6 +40,11 @@ public class DecodificadorCanal {
 		return 0; 
 	}
 	
+	/**
+	 * comparteVectors : compara dos vectores y determina si son iguales
+	 * true  : si son iguales 
+	 * false : si no lo son 
+	 * */
 	public boolean comparteVectors(int[] vecM, int[] vec ) {
 		for (int i = 0; i < vec.length; i++) {
 			if( (vecM[i] ^ vec[i]) !=  0) {
@@ -38,6 +54,10 @@ public class DecodificadorCanal {
 		return true;
 	}
 	
+	/**
+	 * calcularSindrome : calcula el sindrome de la operación rH = s 
+	 * retorna un vector de enteros que represneta el sindrome
+	 * */
 	public int[] calcularSindrome(int[] r) {
 		int rows =  matrizParidad.length; 
 		int columns = matrizParidad[0].length; 
@@ -53,6 +73,10 @@ public class DecodificadorCanal {
 		return sindrome; 
 	}
 	
+	/**
+	 * binaryAdd : suma cada valor del vector del sindrome 
+	 * retorna el valor de la suma de las posiciones del sindrome 
+	 * */
 	private int binaryAdd(int[] r) {
 		int s = 0; 
 		for (int i = 0; i < r.length-1; i++) {
@@ -60,7 +84,6 @@ public class DecodificadorCanal {
 		}
 		return s;
 	}
-	
 	
 	public static void main(String[] args) {
 		DecodificadorCanal dc = new DecodificadorCanal();
@@ -80,10 +103,6 @@ public class DecodificadorCanal {
 		int[] b = {1,1,1}; 
 		
 		System.out.println("\n"+   dc.comparteVectors(a, b) );
-		
-		
-		
-		
 	}
 
 }
