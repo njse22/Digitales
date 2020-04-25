@@ -21,6 +21,10 @@ public class CodificacionCanal {
 		lecEsc = new lectorEscritor();
 	}
 	
+	public int[][] getMatriz(){
+		return matrizParidad; 
+	}
+	
 	/**
 	 * en este metodo se inicializa la matriz de paridad a partir de un archivo de texto plano que contiene su informacion
 	 * */
@@ -31,7 +35,7 @@ public class CodificacionCanal {
 //		}
 		
 		String[] temporal = datosMatriz[0].split(" ");
-		matrizParidad = new int[Integer.parseInt(temporal[0])][Integer.parseInt(temporal[1])];// se asigna el tamaño de la matriz.
+		matrizParidad = new int[Integer.parseInt(temporal[0])][Integer.parseInt(temporal[1])];// se asigna el tamaï¿½o de la matriz.
 		
 		for(int i = 1;i<datosMatriz.length;i++) {                     //-----------------------------------------------+
 			temporal = datosMatriz[i].split(" ");                     //dentro de esta seccion se lleva ---------------+
