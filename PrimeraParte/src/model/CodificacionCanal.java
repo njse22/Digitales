@@ -8,6 +8,20 @@ public class CodificacionCanal {
 	public static final String MATRIZ_DE_PARIDAD = "./data/resultados segunda entrega/MatrizDeParidad.txt";
 	
 	/**
+	 * String con la direccion del archivo que contendra la cadena ya codificada.
+	 * */
+	public static final String ARCHIVO_CODIFICACION_CANAL = "./data/resultados segunda entrega/codificacionCanal.txt";
+	
+	/**
+	 * String con la direccion del archivo que contendra el resumen de la codicficacion de canal.
+	 * */
+	public static final String ARCHIVO_RESUMEN_CODIFICACION_CANAL = "./data/resultados segunda entrega/resumen_codificacionCanal.txt";
+	/**
+	 * String con la direccion del archivo que contendra la cadena ya codificada.
+	 * */
+	public static final String ARCHIVO_CODIFICACION_FUENTE = "./data/resultados primera entrega/codificacion.txt";
+	
+	/**
 	 * representa la matriz de paridad que sera necesaria para la codificacion de lo datos.
 	 * */
 	private int[][] matrizParidad;
@@ -17,14 +31,65 @@ public class CodificacionCanal {
 	 * */
 	private lectorEscritor lecEsc;
 	
+	/**
+	 * cadena de bits que se desea codificar.
+	 * */
+	private String cadenaCruda;
+	
+	/**
+	 * cadena de bits ya codificada
+	 * */
+	private String cadenaCodificada;
+	
+	
 	public CodificacionCanal() {
 		lecEsc = new lectorEscritor();
 	}
 	
+
 	public int[][] getMatriz(){
 		return matrizParidad; 
 	}
 	
+	
+	
+	public int[][] getMatrizParidad() {
+		return matrizParidad;
+	}
+
+
+
+	public void setMatrizParidad(int[][] matrizParidad) {
+		this.matrizParidad = matrizParidad;
+	}
+
+
+
+	public String getCadenaCruda() {
+		return cadenaCruda;
+	}
+
+
+
+	public void setCadenaCruda(String cadenaCruda) {
+		this.cadenaCruda = cadenaCruda;
+	}
+
+
+
+	public String getCadenaCodificada() {
+		return cadenaCodificada;
+	}
+
+
+
+	public void setCadenaCodificada(String cadenaCodificada) {
+		this.cadenaCodificada = cadenaCodificada;
+	}
+
+
+
+
 	/**
 	 * en este metodo se inicializa la matriz de paridad a partir de un archivo de texto plano que contiene su informacion
 	 * */
@@ -149,13 +214,92 @@ public class CodificacionCanal {
 		
 		matrizParidad = cambio;// intercambia la antigua matris de pivotes por la nueva matriz sistematizada.
 		
+//		String cadenaVerificacion = "";
+//		for(int i= 0; i < matrizParidad.length;i++) {
+//			for(int j=0; j < matrizParidad[0].length;j++) {
+//				cadenaVerificacion = cadenaVerificacion+matrizParidad[i][j];
+//			}
+//			System.out.println(cadenaVerificacion);
+//			cadenaVerificacion ="";
+//		}
+	}
+	
+	
+	/**
+	 * metodo encargado de codificar una cadena de caracteres empleando 
+	 * una matriz de paridad para luego pasar la cadena ya codificada a un archivo de texto plano.
+	 * */
+	public void codificar() {
+//		cadenaCruda = lecEsc.leerTexto("./data/resultados segunda entrega/prueba codificacionCanal.txt");
+		cadenaCruda = lecEsc.leerTexto(ARCHIVO_CODIFICACION_FUENTE);//extrae la informacion a codeficar de un archivo de texto plano.
+		int bitsMensaje = matrizParidad[0].length -matrizParidad.length;//la cantidad de bits del mensaje que se iran tomando para la codificacion.
+		int bitsParidad = matrizParidad.length;// cantidad de bits para la paridad
+		int contadorPoscicion = 0; // contador para ir moviendo de bit en bit por el mensaje a codificar.
+		char[] mensajeCrudo = new char[matrizParidad[0].length];//grupo de bits del mensaje que iran siendo codificados;
+		String mensajeCodificado = "";// prupo de bits ya codificados.
+		int constante = matrizParidad[0].length-matrizParidad.length;
+		while(contadorPoscicion<cadenaCruda.length()-1) {// ciclo dentro del cual se codifica el mensaje
+			for (int i = 0; i <constante;i++ ) {//ciclo encargado de leer la cadena cruda bit por bit 
+				mensajeCrudo[i] = cadenaCruda.charAt(contadorPoscicion);
+				contadorPoscicion++;
+				
+			}
+			int bitChequeo = constante;
+			int contadorFila = 0;
+			while (bitChequeo < matrizParidad[0].length) {//ciclo encargado de asignar los bits de chequeo
+				int contadorChequeo = 0;
+				
+				for(int i = 0; i < constante;i++) {
+					if(matrizParidad[contadorFila][i]==1 && mensajeCrudo[i] == '1') {
+						contadorChequeo++;
+					}
+				}
+				if(contadorChequeo == 0 ||(contadorChequeo%2)==0) {
+					mensajeCrudo[bitChequeo] = '0';
+				}else if((contadorChequeo%2)!=0) {
+					mensajeCrudo[bitChequeo] = '1';
+				}
+				
+				bitChequeo++;
+				contadorFila++;
+			}
+			
+			for(int i =0; i < mensajeCrudo.length;i++) {
+				mensajeCodificado = mensajeCodificado+mensajeCrudo[i];
+			}
+			
+		}
+		
+		cadenaCodificada = mensajeCodificado;
+	}
+	/**
+	 * metodo encargado de guardar un resumen de el proceso de codificacion de canal en un archuvo de texto
+	 * */
+	public void resumen() {
+		String cadenaVerificacion = "++++++++++++++++++++++++++++++++++++++++++++++ MATRIZ DE PARIDAD SISTEMATIZADA DE "+matrizParidad.length+"FILAS X "+matrizParidad[0].length+"COLUMNAS ++++++++++++++++++++++++++++++++++++++++++++++\n";
+		for(int i= 0; i < matrizParidad.length;i++) {
+			for(int j=0; j < matrizParidad[0].length;j++) {
+				cadenaVerificacion = " "+cadenaVerificacion+matrizParidad[i][j];
+			}
+			cadenaVerificacion = cadenaVerificacion+"\n";
+		}
+		
+		cadenaVerificacion = cadenaVerificacion+"\n"
+				+ "++++++++++++++++++++++++++++++++++++++++++++++ RESUMEN CODIFICACION ++++++++++++++++++++++++++++++++++++++++++++++ \n\n"
+				+ "cadena antes de ser codificada:\n"+cadenaCruda+"\n"
+				+ "con una logitud de: "+ cadenaCruda.length()+" bits \n\n"
+				+ "cadena despues de ser codificada:\n"+cadenaCodificada+"\n"
+				+ "con una logitud de: "+ cadenaCodificada.length()+" bits \n\n";
+		
+		lecEsc.escribirTexto(cadenaVerificacion, ARCHIVO_RESUMEN_CODIFICACION_CANAL);
 	}
 	
 	public static void main(String[] args) {
 		CodificacionCanal c = new CodificacionCanal();
 		c.inicializarMatriz();
-		System.out.println(c.estaSistematizada());
 		c.sistematizar();
+		c.codificar();
+		c.resumen();
 	}
 
 }
