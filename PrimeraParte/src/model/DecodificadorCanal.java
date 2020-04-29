@@ -91,18 +91,9 @@ public class DecodificadorCanal {
 		c.inicializarMatriz();
 		c.sistematizar();
 		dc.setMatrizParidad(c.getMatriz());
-		int[] r = {1,1,0,1,0,1,0}; 
-		System.out.print("[ ");
-		for (int i = 0; i < dc.calcularSindrome(r).length; i++) {
-			System.out.print(dc.calcularSindrome(r)[i]);
-			System.out.print(" , ");
-		}
-		System.out.print(" ]");
+		 
 		
-		int[] a = {1,1,1}; 
-		int[] b = {1,1,1}; 
 		
-		System.out.println("\n"+   dc.comparteVectors(a, b) );
 	}
 
 }
