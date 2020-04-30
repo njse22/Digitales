@@ -109,10 +109,9 @@ public class MainLZW {
 		System.out.println("Se decodifico el mensaje!");
 	}
 	
-	public static void main(String[] args) {
-		MainLZW m = new MainLZW();
-		m.inicializarTexto();
-		m.codificar();
-		m.decodificar();
+	public void mainLZW() {
+		inicializarTexto();
+		codificar();
+		decodificar();
 	}
 }

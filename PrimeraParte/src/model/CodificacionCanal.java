@@ -95,9 +95,6 @@ public class CodificacionCanal {
 	 * */
 	public void inicializarMatriz() {
 		String[] datosMatriz = lecEsc.leerTexto(MATRIZ_DE_PARIDAD).split("\n");// se toman los datos del archivo de texto.
-//		for(int i=0;i<datosMatriz.length;i++) {
-//			System.out.println(datosMatriz[i]);
-//		}
 		
 		String[] temporal = datosMatriz[0].split(" ");
 		matrizParidad = new int[Integer.parseInt(temporal[0])][Integer.parseInt(temporal[1])];// se asigna el tama�o de la matriz.
@@ -109,14 +106,6 @@ public class CodificacionCanal {
 			}                                                         //posciciones------------------------------------+
 		}                                                             //-----------------------------------------------+
 		
-//		String cadenaVerificacion = "";
-//		for(int i= 0; i < matrizParidad.length;i++) {
-//			for(int j=0; j < matrizParidad[0].length;j++) {
-//				cadenaVerificacion = cadenaVerificacion+matrizParidad[i][j];
-//			}
-//			System.out.println(cadenaVerificacion);
-//			cadenaVerificacion ="";
-//		}
 	}
 	
 	/**
@@ -134,7 +123,7 @@ public class CodificacionCanal {
 	 * |1 1 0 1 +0 0 1+|
 	 *          +++++++       
 	 *          
-	 * @return condicion: boolean que corresponde al resultado de la verificacion- true si si es sistematizada o false de lo contrario.
+	 * @return condicion: boolean que corresponde al resultado de la verificacion- true si  esta sistematizada o false de lo contrario.
 	 * */
 	public boolean estaSistematizada() {
 		boolean condicion = true;
@@ -294,12 +283,13 @@ public class CodificacionCanal {
 		lecEsc.escribirTexto(cadenaVerificacion, ARCHIVO_RESUMEN_CODIFICACION_CANAL);
 	}
 	
-	public static void main(String[] args) {
-		CodificacionCanal c = new CodificacionCanal();
-		c.inicializarMatriz();
-		c.sistematizar();
-		c.codificar();
-		c.resumen();
+	public void mainCodificacionCanal() {
+		inicializarMatriz();
+		if(!estaSistematizada()) {			
+			sistematizar();
+		}
+		codificar();
+		resumen();
 	}
 
 }
